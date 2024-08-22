@@ -22,11 +22,11 @@ export class UserEntity extends Entity<UserProps> {
     }
 
     private set name(value: string){
-        this.name = value;
+        this.props.name = value;
     }
 
     private set password(value: string){
-        this.password = value;
+        this.props.password = value;
     }
 
     get name() {
