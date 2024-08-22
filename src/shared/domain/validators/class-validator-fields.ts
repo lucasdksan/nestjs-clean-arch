@@ -14,7 +14,7 @@ export abstract class ClassValidatorFields <PropsValidated> implements Validator
                 this.errors[field] = Object.values(error.constraints)
             }
         } else {
-            this.validate = data;
+            this.validatedData = data;
         }
 
         return !errors.length;
