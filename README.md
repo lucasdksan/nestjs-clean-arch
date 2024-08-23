@@ -9,6 +9,7 @@ Aplicando Clear Code, DDD e Clean Architecture em um projeto Nestjs + Docker + P
 * [Testes](#Testes)
 * [Testes Unitários](#testes-unitários)
 * [Testes de Integração](#testes-de-integração)
+* [DDD](#ddd-domain-driven-design)
 
 ## Testes
 
@@ -92,3 +93,18 @@ Comportamento inesperado ocorre quando os módulos exibem um comportamento difer
 * Erros de programação: Os módulos podem conter bugs ou podem não estar funcionando conforme especificado.
 * Problemas de hardware: Os dispositivos de hardware podem estar danificados.
 * Interferência de outros aplicativos: Outros aplicativos podem estar interferindo no funcionamento dos módulos.
+
+## DDD (Domain Driven Design)
+
+Software é um instrumento criado para ajudar a lidar com as complexidades da vida moderna. Software é apenas um meio par aum fim, e normalmente isso é algo muito prático e real.
+
+Software tem que ser prático e útil; caso contrário, não iria investir tanto tempo e recursos para sua criação. Um pacote útil de software não pode ser dissociado do que espera da realidade, o domínio é suposto para nos ajudar a gerir.
+
+Design de software é uma arte, e como qualquer arte, não pode ser ensinada e aprendida como uma ciência exata por meio de teoremas e fórmulas.
+
+A fim de criar um bom software, é necessário saber a causa da software. Em outras palavras, é preciso entender o domínio da causa.
+
+Quando é iniciado um projeto de software, é preciso ter uma concentração maior no domínio que está operando dentro. Todo propósito de um software é aumentar um domínio específico.
+
+Tornando um software um reflexo do domínio facilita em deixar a relação entre os dois mais harmoniosa. O software precisa incorporar os conceitos e elementos do domínio do núcleo, e precisamente perceber as relações entre eles. Software tem que modelar o domínio.
+
