@@ -12,7 +12,7 @@ class StubRules {
     price: number;
 
     constructor(data: any) {
-        Object.assign(this, data)
+        Object.assign(this, data);
     }
 }
 
@@ -44,7 +44,7 @@ describe("ClassValidatorFields integration test", () => {
         });
     });
 
-    it("Should validate with errors", ()=>{
+    it("Should validate without errors", ()=>{
         expect(sut.validate({ name: "arroz", price: 100 })).toBeTruthy();
         expect(sut.validatedData).toStrictEqual(new StubRules({ name: "arroz", price: 100 }));
     });
