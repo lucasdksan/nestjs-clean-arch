@@ -39,4 +39,14 @@ describe("InMemoryRepository", () => {
 
         expect(entity.toJSON()).toStrictEqual(result.toJSON());
     });
+
+    it("Should returns all entities",async ()=>{
+        const entity = new StubEntity({ name: "Algo", price: 100 });
+
+        await sut.insert(entity);
+
+        const result = await sut.findAll();
+
+        expect([entity]).toStrictEqual(result);
+    });
 });
