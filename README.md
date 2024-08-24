@@ -4,7 +4,7 @@ Aplicando Clear Code, DDD e Clean Architecture em um projeto Nestjs + Docker + P
 
 ![Logo](./github/logo.jpg)
 
-# Sumário
+## Sumário
 
 * [Resumo](#resumo)
 * [Testes](/readme/testes.md#testes)
