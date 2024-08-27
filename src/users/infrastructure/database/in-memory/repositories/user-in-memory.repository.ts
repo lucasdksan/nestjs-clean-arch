@@ -26,7 +26,7 @@ export class UserInMemoryRepository extends InMemorySearchableRepository<UserEnt
             return items;
         }
 
-        return items.filter(item => item.props.name.toLowerCase().includes(filter) );
+        return items.filter(item => item.props.name.toLowerCase().includes(filter.toLowerCase()));
     }
 
     protected async applySort(items: UserEntity[], sort: string | null, sortDir: SortDirection | null): Promise<UserEntity[]> {
