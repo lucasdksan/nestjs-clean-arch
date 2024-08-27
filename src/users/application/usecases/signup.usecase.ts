@@ -1,3 +1,4 @@
+import { HashProvider } from "../../../shared/application/providers/hash-provider";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { BadRequestError } from "../errors/bad-request-error";
@@ -18,7 +19,10 @@ export namespace SignupUseCae {
     }
 
     export class UseCase {
-        constructor(private userRepository: UserRepository.Repository){}
+        constructor(
+            private userRepository: UserRepository.Repository,
+            private hashProvider: HashProvider,
+        ){}
 
         async execute(input: Input): Promise<Output> {
             const { email, name, password } = input;
@@ -26,7 +30,10 @@ export namespace SignupUseCae {
 
             await this.userRepository.emailExists(email);
 
-            const entity = new UserEntity(input);
+            const hashPassword = await this.hashProvider.generateHash(password);
+            const entity = new UserEntity(
+                Object.assign(input, { password: hashPassword })
+            );
 
             await this.userRepository.insert(entity);
 
