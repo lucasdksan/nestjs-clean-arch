@@ -2,7 +2,8 @@ import { HashProvider } from "../../../shared/application/providers/hash-provide
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { UserOutput } from "../dtos/user-output.dto";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "../../../shared/application/errors/bad-request-error";
+import { UseCase as DefaultUseCase } from "../../../shared/application/usecases/use-case";
 
 export namespace SignupUseCae {
     export type Input = {
@@ -13,7 +14,7 @@ export namespace SignupUseCae {
 
     export type Output = UserOutput;
 
-    export class UseCase {
+    export class UseCase implements DefaultUseCase<Input, Output>{
         constructor(
             private userRepository: UserRepository.Repository,
             private hashProvider: HashProvider,

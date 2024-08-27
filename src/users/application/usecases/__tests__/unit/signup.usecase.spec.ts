@@ -3,7 +3,7 @@ import { ConflictError } from "../../../../../shared/domain/errors/conflict-erro
 import { UserDataBuilder } from "../../../../domain/testing/helpers/user-data-builder";
 import { UserInMemoryRepository } from "../../../../infrastructure/database/in-memory/repositories/user-in-memory.repository";
 import { BcryptjsHashProvider } from "../../../../infrastructure/providers/hash-provider/bcryptjs-hash.provider";
-import { BadRequestError } from "../../../errors/bad-request-error";
+import { BadRequestError } from "../../../../../shared/application/errors/bad-request-error";
 import { SignupUseCae } from "../../signup.usecase";
 
 describe("Signup UseCase test unit", ()=> {
