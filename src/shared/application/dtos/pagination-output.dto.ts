@@ -1,5 +1,5 @@
-import { Entity } from "../domain/entity/entity";
-import { SearchResult } from "../domain/repositories/searchable-repository-contracts";
+import { Entity } from "../../domain/entity/entity";
+import { SearchResult } from "../../domain/repositories/searchable-repository-contracts";
 
 export type PaginationOutput <Item = any> = {
     items: Item[];

@@ -1,8 +1,8 @@
-import { SearchInput } from "../../../shared/dtos/search-input.dto";
+import { SearchInput } from "../../../shared/application/dtos/search-input.dto";
 import { UseCase as DefaultUseCase } from "../../../shared/application/usecases/use-case";
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { UserOutput, UserOutputMapper } from "../dtos/user-output.dto";
-import { PaginationOutput, PaginationOutputMapper } from "../../../shared/dtos/pagination-output.dto";
+import { PaginationOutput, PaginationOutputMapper } from "../../../shared/application/dtos/pagination-output.dto";
 
 export namespace ListUsers {
     export type Input = SearchInput;
