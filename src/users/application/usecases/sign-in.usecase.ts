@@ -4,6 +4,7 @@ import { UserRepository } from "../../domain/repositories/user.repository";
 import { UserOutput, UserOutputMapper } from "../dtos/user-output.dto";
 import { BadRequestError } from "../../../shared/application/errors/bad-request-error";
 import { UseCase as DefaultUseCase } from "../../../shared/application/usecases/use-case";
+import { InvalidCredentialsError } from "../../../shared/application/errors/invalid-credentials-error";
 
 export namespace SigninUseCase {
     export type Input = {
@@ -26,6 +27,10 @@ export namespace SigninUseCase {
             const entity = await this.userRepository.findByEmail(email);
 
             const hashPasswordMatch = await this.hashProvider.compareHash(password, entity.password);
+
+            if(!hashPasswordMatch) {
+                throw new InvalidCredentialsError("Invalid Credentials");
+            }
 
             return UserOutputMapper.toOutput(entity);
         }
