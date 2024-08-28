@@ -16,7 +16,7 @@ describe("Get User Usecase unit test", ()=>{
     it("Should throws error when entity not found", async ()=>{
         await expect(()=> sut.execute({ id: "fake" })).rejects.toThrow(
             new NotFoundError("Entity not found")
-        )
+        );
     });
 
     it("Should be able to get user profile", async ()=>{
@@ -34,6 +34,6 @@ describe("Get User Usecase unit test", ()=>{
             email: items[0].email,
             password: items[0].password,
             createdAt: items[0].createdAt,
-        })
+        });
     });
 });

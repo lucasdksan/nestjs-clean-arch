@@ -13,10 +13,10 @@ describe("UpdatePasswordUseCase unit tests", () => {
     let hashProvider: HashProvider;
 
     beforeEach(() => {
-        repository = new UserInMemoryRepository()
-        hashProvider = new BcryptjsHashProvider()
-        sut = new UpdatePassword.UseCase(repository, hashProvider)
-    })
+        repository = new UserInMemoryRepository();
+        hashProvider = new BcryptjsHashProvider();
+        sut = new UpdatePassword.UseCase(repository, hashProvider);
+    });
 
     it("Should throws error when entity not found", async () => {
         await expect(() =>
@@ -25,12 +25,12 @@ describe("UpdatePasswordUseCase unit tests", () => {
                 password: "test password",
                 oldPassword: "old password",
             }),
-        ).rejects.toThrow(new NotFoundError("Entity not found"))
-    })
+        ).rejects.toThrow(new NotFoundError("Entity not found"));
+    });
 
     it("Should throws error when old password not provided", async () => {
-        const entity = new UserEntity(UserDataBuilder({}))
-        repository.items = [entity]
+        const entity = new UserEntity(UserDataBuilder({}));
+        repository.items = [entity];
         await expect(() =>
             sut.execute({
                 id: entity.id,
@@ -39,12 +39,12 @@ describe("UpdatePasswordUseCase unit tests", () => {
             }),
         ).rejects.toThrow(
             new InvalidPasswordError("Old password and new Password is required"),
-        )
-    })
+        );
+    });
 
     it("Should throws error when new password not provided", async () => {
-        const entity = new UserEntity(UserDataBuilder({ password: "1234" }))
-        repository.items = [entity]
+        const entity = new UserEntity(UserDataBuilder({ password: "1234" }));
+        repository.items = [entity];
         await expect(() =>
             sut.execute({
                 id: entity.id,
@@ -54,38 +54,38 @@ describe("UpdatePasswordUseCase unit tests", () => {
         ).rejects.toThrow(
             new InvalidPasswordError("Old password and new Password is required"),
         )
-    })
+    });
 
     it("Should throws error when new old password does not match", async () => {
-        const hashPassword = await hashProvider.generateHash("1234")
-        const entity = new UserEntity(UserDataBuilder({ password: hashPassword }))
-        repository.items = [entity]
+        const hashPassword = await hashProvider.generateHash("1234");
+        const entity = new UserEntity(UserDataBuilder({ password: hashPassword }));
+        repository.items = [entity];
         await expect(() =>
             sut.execute({
                 id: entity.id,
                 password: "4567",
                 oldPassword: "123456",
             }),
-        ).rejects.toThrow(new InvalidPasswordError("Old password does not match"))
+        ).rejects.toThrow(new InvalidPasswordError("Old password does not match"));
     })
 
     it("Should update a password", async () => {
-        const hashPassword = await hashProvider.generateHash("1234")
-        const spyUpdate = jest.spyOn(repository, "update")
-        const items = [new UserEntity(UserDataBuilder({ password: hashPassword }))]
-        repository.items = items
+        const hashPassword = await hashProvider.generateHash("1234");
+        const spyUpdate = jest.spyOn(repository, "update");
+        const items = [new UserEntity(UserDataBuilder({ password: hashPassword }))];
+        repository.items = items;
 
         const result = await sut.execute({
             id: items[0].id,
             password: "4567",
             oldPassword: "1234",
-        })
+        });
 
         const checkNewPassword = await hashProvider.compareHash(
             "4567",
             result.password,
-        )
-        expect(spyUpdate).toHaveBeenCalledTimes(1)
-        expect(checkNewPassword).toBeTruthy()
-    })
-})
+        );
+        expect(spyUpdate).toHaveBeenCalledTimes(1);
+        expect(checkNewPassword).toBeTruthy();
+    });
+});
