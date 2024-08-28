@@ -1,6 +1,5 @@
 import { validate as uuidValidate } from "uuid";
 import { Entity } from "../../entity";
-import { emit } from "process";
 
 type StubProps = {
     prop1: string;
