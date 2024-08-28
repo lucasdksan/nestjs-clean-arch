@@ -4,17 +4,18 @@ import { UserDataBuilder } from "../../../../domain/testing/helpers/user-data-bu
 import { UserInMemoryRepository } from "../../../../infrastructure/database/in-memory/repositories/user-in-memory.repository";
 import { BcryptjsHashProvider } from "../../../../infrastructure/providers/hash-provider/bcryptjs-hash.provider";
 import { BadRequestError } from "../../../../../shared/application/errors/bad-request-error";
-import { SignupUseCae } from "../../signup.usecase";
+import { SignupUseCase } from "../../sign-up.usecase";
+
 
 describe("Signup UseCase test unit", ()=> {
-    let sut: SignupUseCae.UseCase;
+    let sut: SignupUseCase.UseCase;
     let repository: UserInMemoryRepository;
     let hashProvider: HashProvider;
 
     beforeEach(()=>{
         repository = new UserInMemoryRepository();
         hashProvider = new BcryptjsHashProvider();
-        sut = new SignupUseCae.UseCase(repository, hashProvider);
+        sut = new SignupUseCase.UseCase(repository, hashProvider);
     });
 
     it("Should create a user", async ()=>{

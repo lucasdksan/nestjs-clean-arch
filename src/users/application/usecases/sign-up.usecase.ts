@@ -1,11 +1,11 @@
 import { HashProvider } from "../../../shared/application/providers/hash-provider";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserRepository } from "../../domain/repositories/user.repository";
-import { UserOutput } from "../dtos/user-output.dto";
+import { UserOutput, UserOutputMapper } from "../dtos/user-output.dto";
 import { BadRequestError } from "../../../shared/application/errors/bad-request-error";
 import { UseCase as DefaultUseCase } from "../../../shared/application/usecases/use-case";
 
-export namespace SignupUseCae {
+export namespace SignupUseCase {
     export type Input = {
         name: string;
         email: string;
@@ -33,7 +33,7 @@ export namespace SignupUseCae {
 
             await this.userRepository.insert(entity);
 
-            return entity.toJSON();
+            return UserOutputMapper.toOutput(entity);
         }
     }
 }

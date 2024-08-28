@@ -2,7 +2,7 @@ import { NotFoundError } from "../../../../../shared/domain/errors/not-found-err
 import { UserEntity } from "../../../../domain/entities/user.entity";
 import { UserDataBuilder } from "../../../../domain/testing/helpers/user-data-builder";
 import { UserInMemoryRepository } from "../../../../infrastructure/database/in-memory/repositories/user-in-memory.repository";
-import { GetUser } from "../../getuser.usecase";
+import { GetUser } from "../../get-user.usecase";
 
 describe("Get User Usecase unit test", ()=>{
     let sut: GetUser.UseCase;
