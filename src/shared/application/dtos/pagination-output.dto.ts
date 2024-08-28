@@ -16,7 +16,7 @@ export class PaginationOutputMapper {
             total: result.total,
             currentPage: result.currentPage,
             lastPage: result.lastPage,
-            perPage: result.lastPage
+            perPage: result.perPage
         }
     }
 }
