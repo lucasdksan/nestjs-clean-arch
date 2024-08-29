@@ -5,7 +5,7 @@ import { UserOutput, UserOutputMapper } from "../dtos/user-output.dto";
 import { BadRequestError } from "../../../shared/application/errors/bad-request-error";
 import { UseCase as DefaultUseCase } from "../../../shared/application/usecases/use-case";
 
-export namespace SignupUseCase {
+export namespace Signup {
     export type Input = {
         name: string;
         email: string;
