@@ -1,3 +1,4 @@
+import { ConflictError } from "../../../../../shared/domain/errors/conflict-error";
 import { NotFoundError } from "../../../../../shared/domain/errors/not-found-error";
 import { PrismaService } from "../../../../../shared/infrastructure/database/prisma/prisma.service";
 import { UserEntity } from "../../../../domain/entities/user.entity";
@@ -9,12 +10,26 @@ export class UserPrismaRepository implements UserRepository.Repository {
 
     constructor(private prismaService: PrismaService){ }
 
-    findByEmail(email: string): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+    async findByEmail(email: string): Promise<UserEntity> {
+        try {
+            const user = await this.prismaService.user.findUnique({
+                where: { email }
+            });
+
+            return UserModelMapper.toEntity(user);
+        } catch (error) {
+            throw new NotFoundError(`UserModel not found usind email ${email}`);
+        }
     }
 
-    emailExists(email: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async emailExists(email: string): Promise<void> {
+        const user = await this.prismaService.user.findUnique({
+            where: { email }
+        });
+
+        if(user){
+            throw new ConflictError(`Email address already used`)
+        }
     }
 
     async search(props: UserRepository.SearchParams): Promise<UserRepository.SearchResult> {
@@ -74,12 +89,23 @@ export class UserPrismaRepository implements UserRepository.Repository {
         return models.map(model=> UserModelMapper.toEntity(model));
     }
 
-    update(entity: UserEntity): Promise<void> {
-        throw new Error("Method not implemented.");
+    async update(entity: UserEntity): Promise<void> {
+        await this._get(entity.id);
+        await this.prismaService.user.update({
+            data: entity.toJSON(),
+            where: {
+                id: entity.id,
+            }
+        });
     }
 
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<void> {
+        await this._get(id);
+        await this.prismaService.user.delete({
+            where: {
+                id
+            }
+        });
     }
 
     protected async _get(id: string): Promise<UserEntity>{

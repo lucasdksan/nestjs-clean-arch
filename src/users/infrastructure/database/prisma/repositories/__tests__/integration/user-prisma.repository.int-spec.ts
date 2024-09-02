@@ -7,6 +7,7 @@ import { NotFoundError } from "../../../../../../../shared/domain/errors/not-fou
 import { UserEntity } from "../../../../../../domain/entities/user.entity";
 import { UserDataBuilder } from "../../../../../../domain/testing/helpers/user-data-builder";
 import { UserRepository } from "../../../../../../domain/repositories/user.repository";
+import { ConflictError } from "../../../../../../../shared/domain/errors/conflict-error";
 
 describe("UserPrismaRepository integration tests", () => {
     const prismaService = new PrismaClient();
@@ -26,7 +27,7 @@ describe("UserPrismaRepository integration tests", () => {
     });
 
     it("should throws error when entity not found", async () => {
-        expect(() => sut.findById("FakeId")).rejects.toThrow(
+        await expect(() => sut.findById("FakeId")).rejects.toThrow(
             new NotFoundError("UserModel not found using ID FakeId"),
         );
     });
@@ -68,13 +69,97 @@ describe("UserPrismaRepository integration tests", () => {
         entities.map(item => expect(item.toJSON()).toStrictEqual(entity.toJSON()));
     });
 
-    describe("Search method tests", ()=>{
+    it("should throws error on update when a entity not found", async () => {
+        const entity = new UserEntity(UserDataBuilder({}));
+
+        await expect(() => sut.update(entity)).rejects.toThrow(
+            new NotFoundError(`UserModel not found using ID  ${entity.id}`),
+        );
+    });
+
+    it("should update a entity", async () => {
+        const entity = new UserEntity(UserDataBuilder({}));
+
+        await prismaService.user.create({
+            data: entity.toJSON(),
+        });
+
+        entity.update("new name");
+        await sut.update(entity);
+
+        const output = await prismaService.user.findUnique({
+            where: {
+                id: entity.id
+            }
+        });
+
+        expect(output.name).toBe("new name");
+    });
+
+    it("should throws error on delete when a entity not found", async () => {
+        const entity = new UserEntity(UserDataBuilder({}));
+
+        await expect(() => sut.delete(entity.id)).rejects.toThrow(
+            new NotFoundError(`UserModel not found using ID  ${entity.id}`),
+        );
+    });
+
+    it("should delete a entity", async () => {
+        const entity = new UserEntity(UserDataBuilder({}));
+        await prismaService.user.create({
+            data: entity.toJSON(),
+        });
+
+        await sut.delete(entity.id);
+
+        const output = await prismaService.user.findUnique({
+            where: {
+                id: entity.id
+            }
+        });
+
+        expect(output.name).toBeNull();
+    });
+
+    it("should throws error when a entity not found", async () => {
+        await expect(() => sut.findByEmail("a@a.com")).rejects.toThrow(
+            new NotFoundError(`UserModel not found usind email a@a.com`),
+        );
+    });
+
+    it("should finds a entity by email", async () => {
+        const entity = new UserEntity(UserDataBuilder({ email: "a@a.com" }));
+        await prismaService.user.create({
+            data: entity.toJSON(),
+        });
+        const output = await sut.findByEmail("a@a.com");
+
+        expect(output.toJSON()).toStrictEqual(entity.toJSON());
+    });
+
+    it("should throws error when a entity found by email", async () => {
+        const entity = new UserEntity(UserDataBuilder({ email: "a@a.com" }));
+        await prismaService.user.create({
+            data: entity.toJSON(),
+        });
+
+        await expect(() => sut.emailExists("a@a.com")).rejects.toThrow(
+            new ConflictError(`Email address already used`),
+        );
+    });
+
+    it("should not finds a entity by email", async () => {
+        expect.assertions(0);
+        await sut.emailExists("a@a.com");
+    });
+
+    describe("Search method tests", () => {
         it("should apply only pagination when the other params are null", async () => {
             const createdAt = new Date();
             const entities: UserEntity[] = [];
             const arrange = Array(16).fill(UserDataBuilder({}));
 
-            arrange.forEach((element, index)=>{
+            arrange.forEach((element, index) => {
                 entities.push(
                     new UserEntity({
                         ...element,
@@ -86,7 +171,7 @@ describe("UserPrismaRepository integration tests", () => {
 
             await prismaService.user.createMany({
                 data: entities.map(entity => entity.toJSON())
-            })
+            });
 
             const searchOutput = await sut.search(new UserRepository.SearchParams());
             const { items } = searchOutput;
@@ -99,7 +184,7 @@ describe("UserPrismaRepository integration tests", () => {
                 expect(item).toBeInstanceOf(UserEntity);
             });
 
-            items.reverse().forEach((item, index)=> {
+            items.reverse().forEach((item, index) => {
                 expect(`user-${index + 1}@gmail.com`).toBe(item.email);
             });
         });
@@ -109,7 +194,7 @@ describe("UserPrismaRepository integration tests", () => {
             const entities: UserEntity[] = [];
             const arrange = ["test", "a", "TEST", "b", "TeSt",];
 
-            arrange.forEach((element, index)=>{
+            arrange.forEach((element, index) => {
                 entities.push(
                     new UserEntity({
                         ...UserDataBuilder({ name: element }),
@@ -148,7 +233,7 @@ describe("UserPrismaRepository integration tests", () => {
 
             expect(searchOutputPage2.items[0].toJSON()).toMatchObject(
                 entities[2].toJSON(),
-            )
+            );
         });
     });
 });
