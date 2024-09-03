@@ -17,6 +17,13 @@ Aplicando Clear Code, DDD e Clean Architecture em um projeto Nestjs + Docker + P
     4. [Objetos de Domínio](/readme/ddd.md#objetos-de-domínio)
         1. [Entidades e Objetos de Valor](/readme/ddd.md#entidades-e-objetos-de-valor)
         2. [Serviços](/readme/ddd.md#serviços)
+        3. [Agregados](/readme/ddd.md#agregados)
+        4. [Agregados](/readme/ddd.md#repositórios)
+    5. [Contextos Delimitados](/readme/ddd.md#contextos-delimitados)
+    6. [Camada Anticorrupção](/readme/ddd.md#camada-anticorrupção)
+    7. [Resumo](/readme/ddd.md#resumo)
+* [Clean Architecture](/readme/clean-architecture.md#clean-architecture)
+    1. [Princípios Fundamentais do Clean Architecture](/readme/clean-architecture.md#princípios-fundamentais-do-clean-architecture)
 
 ## Resumo
 

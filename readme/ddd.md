@@ -61,3 +61,47 @@ Outros exemplos de objetos de valor incluem: Moeda, Data, Fone, Email, Hora, Cor
 Já objetos de valor são mais simples. E também eles devem ser imutáveis, ou seja, uma vez criados, não deve ser possível alterar seus valores internos. Por exemplo, para alterar o Endereço de um Usuário devemos abandonar o objeto antigo e criar um objeto com o Endereço novo.
 
 #### Serviços
+
+Existem operações importantes do domínio que não se encaixam em entidades e objetos de valor. Assim, o ideal é criar objetos específicos para implementar essas operações. No jargão de DDD, esses objetos são chamados de serviços. Em alguns sistemas, é comum ver esses objetos sendo chamados também de gerenciadores ou controladores.
+
+A assinatura das operações de um objeto de serviço pode incluir entidades e objetos de valor. No entanto, objetos de serviço não devem possuir estado, isto é, eles devem ser stateless. Por isso, eles não costumam ter atributos, mas apenas métodos.
+
+Serviços normalmente são implementados como singletons, ou seja, possuem uma única instância durante a execução do sistema.
+
+#### Agregados
+
+Agregados (aggregates) são coleções de entidades e objetos de valor. Ou seja, algumas vezes não faz sentido raciocinar sobre entidades e objetos de valor de forma individual. Em vez disso, temos que pensar em grupos de objetos para ter uma visão consistente com o domínio que estamos modelando.
+
+Um agregado possui um objeto raiz, que deve ser uma entidade. Externamente, o agregado é acessado a partir dessa raiz. A raiz, por sua vez, referencia os objetos internos do agregado. Porém, esses objetos internos não devem ser visíveis para o resto do sistema, ou seja, apenas a raiz pode referenciá-los.
+
+Como eles são objetos mais complexos e com objetos internos, pode ser interessante implementar métodos especificamente para criação de agregados, os quais são chamados de fábricas. Ou seja, tais métodos são implementações do padrão de projeto de mesmo nome.
+
+![Agregado](../github/agregado.png)
+
+#### Repositórios
+
+Um repositório é então um objeto usado para recuperar outros objetos de domínio de um banco de dados. Seu objetivo é prover uma abstração que blinde os desenvolvedores de preocupações relacionadas com acesso a bancos de dados. Normalmente, repositórios são criados para recuperar entidades ou agregados.
+
+Em outras palavras, um repositório oferece uma abstração para o banco de dados usado pelo sistema e, assim, permite que os desenvolvedores continuem focados no domínio, em vez de ter sua atenção desviada, em certos momentos, para uma tecnologia de armazenamento de dados.
+
+### Contextos Delimitados
+
+Com o tempo, sistemas de software ficam mais complexos e abrangentes. Por isso, é irrealista imaginar que sistemas de organizações grandes e complexas vão possuir um modelo de domínio único e baseado na mesma linguagem ubíqua.
+
+Em vez disso, é natural que tais organizações tenham sistemas que atendem a usuários com perfis e necessidades diferentes, o que complica a definição de uma linguagem ubíqua. A solução para esse problema consiste em quebrar tais domínios complexos em domínios menores, os quais em DDD são chamados de Contextos Delimitados (Bounded Contexts).
+
+### Camada Anticorrupção
+
+Às vezes, temos que integrar sistemas que estão em contextos delimitados diferentes. Por exemplo, um sistema A precisa usar serviços de um sistema B, que pode inclusive ser um sistema externo, isto é, de uma outra organização. Para evitar que A tenha que se adaptar e usar, mesmo que parcialmente, a linguagem ubíqua de B, pode-se usar uma Camada Anticorrupção para mediar essa comunicação.
+
+Essa camada é formada por três tipos principais de classes:
+
+* Classes de Serviço, cujos métodos serão chamados por A e que, portanto, seguem a linguagem ubíqua desse sistema.
+
+* Classes Adaptadoras, que convertem o modelo e os tipos de dados de B para o modelo e tipos de dados de A. Ou seja, essas classes vão isolar elementos próprios de B e evitar que eles cheguem até o sistema A.
+
+* Uma Classe de Fachada, usada para acessar o sistema B. O papel dessa classe é facilitar o uso de B, principalmente quando ele é um sistema legado com uma interface complexa e antiga.
+
+### Resumo
+
+O DDD (Domain Driven Design) foca em atacar a complexidade no coração do Software. Ele não terá muita utilidade para um simples CRUD, mas para uma empresa que existe varios setores e que cada setor
