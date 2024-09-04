@@ -10,6 +10,7 @@ Aplicando Clear Code, DDD e Clean Architecture em um projeto Nestjs + Docker + P
 * [Testes](/readme/testes.md#testes)
     1. [Testes Unitários](/readme/testes.md#testes-unitários)
     2. [Testes de Integração](/readme/testes.md#testes-de-integração)
+    3. [Testes de Ponta a Ponta (E2E)](/readme/testes.md#testes-de-ponta-a-ponta-e2e)
 * [DDD](/readme/ddd.md#ddd-domain-driven-design)
     1. [Domínio](/readme/ddd.md#domínio)
     2. [Modelo](/readme/ddd.md#modelo)

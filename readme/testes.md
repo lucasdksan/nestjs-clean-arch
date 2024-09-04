@@ -80,3 +80,11 @@ Comportamento inesperado ocorre quando os módulos exibem um comportamento difer
 * Erros de programação: Os módulos podem conter bugs ou podem não estar funcionando conforme especificado.
 * Problemas de hardware: Os dispositivos de hardware podem estar danificados.
 * Interferência de outros aplicativos: Outros aplicativos podem estar interferindo no funcionamento dos módulos.
+
+### Testes de Ponta a Ponta (E2E)
+
+Teste de ponta a ponta é um método de teste de software que valida todo o software do início ao fim, juntamente com sua integração com interfaces externas. O objetivo do teste ponta a ponta é testar todo o software em busca de dependências, dados integrity e comunicação com outros sistemas, interfaces e bancos de dados para exercer um cenário completo de produção.
+
+Junto com o sistema de software, ele também valida o processamento de lote/dados de outros sistemas upstream/downstream. O teste ponta a ponta geralmente é executado após testes funcionais e Teste do sistema. Ele usa produção real como dados e ambiente de teste para simular configurações em tempo real.
+
+Teste de ponta a ponta verifica o fluxo completo do sistema e aumenta a confiança, detectando problemas e aumentando Cobertura de teste de subsistemas. Os sistemas de software modernos são complexos e interconectado com múltiplos subsistemas que podem diferir dos sistemas atuais. Todo o sistema pode entrar em colapso devido à falha de qualquer subsistema, o que representa um grande risco que pode ser evitado por meio de testes ponta a ponta.
