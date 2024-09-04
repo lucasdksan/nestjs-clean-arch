@@ -10,8 +10,9 @@ import { SignupDto } from "../../dtos/sign-up.dto";
 import request from "supertest";
 import { UsersController } from "../../users.controller";
 import { instanceToPlain } from "class-transformer";
+import applayGlobalConfig from "../../../../global-config";
 
-describe("Users Controller test e2e", ()=>{
+describe("Users Controller test e2e", () => {
     let app: INestApplication;
     let module: TestingModule;
     let repository: UserRepository.Repository;
@@ -19,7 +20,7 @@ describe("Users Controller test e2e", ()=>{
 
     const prismaService = new PrismaClient();
 
-    beforeAll(async ()=>{
+    beforeAll(async () => {
         setupPrismaTests();
 
         module = await Test.createTestingModule({
@@ -27,12 +28,13 @@ describe("Users Controller test e2e", ()=>{
         }).compile();
 
         app = module.createNestApplication();
+        applayGlobalConfig(app);
 
         await app.init()
         repository = module.get<UserRepository.Repository>("UserRepository");
     });
 
-    beforeEach(async ()=>{
+    beforeEach(async () => {
         signupDto = {
             name: "test name",
             email: "a1@gmail.com",
@@ -42,21 +44,82 @@ describe("Users Controller test e2e", ()=>{
         await prismaService.user.deleteMany();
     });
 
-    describe("POST /users", ()=>{
-        it("should create a user", async ()=>{
+    describe("POST /users", () => {
+        it("should create a user", async () => {
             const res = await request(app.getHttpServer()).post("/users").send(signupDto).expect(201);
 
-            expect(Object.keys(res.body)).toStrictEqual([
-                "id",
-                "name",
-                "email",
-                "createdAt"
-            ]);
+            expect(Object.keys(res.body)).toStrictEqual(["data"]);
 
-            const user = await repository.findById(res.body.id);
+            const user = await repository.findById(res.body.data.id);
             const presenter = UsersController.userToResponse(user.toJSON());
             const serialized = instanceToPlain(presenter);
-            expect(res.body).toStrictEqual(serialized);
+            expect(res.body.data).toStrictEqual(serialized);
+        });
+
+        it("should return a error with 422 code when the request body is invalid", async () => {
+            const res = await request(app.getHttpServer())
+                .post("/users")
+                .send({})
+                .expect(422);
+            expect(res.body.error).toBe("Unprocessable Entity");
+            expect(res.body.message).toEqual([
+                "name should not be empty",
+                "name must be a string",
+                "email must be an email",
+                "email should not be empty",
+                "email must be a string",
+                "password should not be empty",
+                "password must be a string",
+            ]);
+        });
+
+        it("should return a error with 422 code when the name field is invalid", async () => {
+            delete signupDto.name;
+            const res = await request(app.getHttpServer())
+                .post("/users")
+                .send(signupDto)
+                .expect(422);
+            expect(res.body.error).toBe("Unprocessable Entity");
+            expect(res.body.message).toEqual([
+                "name should not be empty",
+                "name must be a string",
+            ]);
+        });
+
+        it("should return a error with 422 code when the email field is invalid", async () => {
+            delete signupDto.email;
+            const res = await request(app.getHttpServer())
+                .post("/users")
+                .send(signupDto)
+                .expect(422);
+            expect(res.body.error).toBe("Unprocessable Entity");
+            expect(res.body.message).toEqual([
+                "email must be an email",
+                "email should not be empty",
+                "email must be a string",
+            ]);
+        });
+
+        it("should return a error with 422 code when the password field is invalid", async () => {
+            delete signupDto.password;
+            const res = await request(app.getHttpServer())
+                .post("/users")
+                .send(signupDto)
+                .expect(422);
+            expect(res.body.error).toBe("Unprocessable Entity");
+            expect(res.body.message).toEqual([
+                "password should not be empty",
+                "password must be a string",
+            ]);
+        });
+
+        it("should return a error with 422 code with invalid field provided", async () => {
+            const res = await request(app.getHttpServer())
+                .post("/users")
+                .send(Object.assign(signupDto, { xpto: "fake" }))
+                .expect(422);
+            expect(res.body.error).toBe("Unprocessable Entity");
+            expect(res.body.message).toEqual(["property xpto should not exist"]);
         });
     });
 });
