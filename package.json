@@ -21,6 +21,7 @@
         "test:e2e": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.e2e.config.ts"
     },
     "dependencies": {
+        "@fastify/static": "^7.0.4",
         "@nestjs/common": "^10.0.0",
         "@nestjs/config": "^3.2.3",
         "@nestjs/core": "^10.0.0",
