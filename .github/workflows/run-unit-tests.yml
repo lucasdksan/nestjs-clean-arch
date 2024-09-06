@@ -20,7 +20,7 @@ jobs:
               env:
                 PORT: 3000
                 NODE_ENV: test
-                JWT_SECRET: FAKE
+                JWT_SECRET: MY_test_SECRET
                 JWT_EXPIRES_IN: 86400
                 DATABASE_URL: fake_url
 
