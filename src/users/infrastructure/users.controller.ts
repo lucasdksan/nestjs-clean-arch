@@ -16,7 +16,9 @@ import { UserPresenter } from "./presenters/user.presenter";
 import { UserCollectionPresenter } from "./presenters/user-collection.presenter";
 import { AuthService } from "../../auth/infrastructure/auth.service";
 import { AuthGuard } from "../../auth/infrastructure/auth.guard";
+import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
 
+@ApiTags("Users")
 @Controller("users")
 export class UsersController {
     @Inject(Signup.UseCase)
@@ -51,6 +53,14 @@ export class UsersController {
         return new UserCollectionPresenter(output);
     }
 
+    @ApiResponse({
+        status: 409,
+        description: "Conflito de email"
+    })
+    @ApiResponse({
+        status: 422,
+        description: "Corpo da requisição com dados invalidos"
+    })
     @Post()
     async create(@Body() signupDto: SignupDto) {
         const output = await this.signupUseCase.execute(signupDto);
@@ -58,6 +68,29 @@ export class UsersController {
         return UsersController.userToResponse(output);
     }
 
+    @ApiResponse({
+        status: 200,
+        schema: {
+            type: "object",
+            properties: {
+                accessToken: {
+                    type: "string"
+                }
+            }
+        }
+    })
+    @ApiResponse({
+        status: 422,
+        description: "Corpo da requisição com dados invalidos"
+    })
+    @ApiResponse({
+        status: 404,
+        description: "Email não encontrado"
+    })
+    @ApiResponse({
+        status: 400,
+        description: "Credenciais inválidas"
+    })
     @HttpCode(200)
     @Post("login")
     async login(@Body() signinDto: SigninDto) {
@@ -66,12 +99,63 @@ export class UsersController {
     }
 
     @UseGuards(AuthGuard)
+    @ApiResponse({
+        status: 200,
+        schema: {
+            type: "object",
+            properties: {
+                meta: {
+                    type: "object",
+                    properties: {
+                        total: {
+                            type: "number",
+                            title: "total de itens da pesquisa"
+                        },
+                        currentPage: {
+                            type: "number",
+                            title: "A página atual"
+                        },
+                        lastPage: {
+                            type: "number",
+                            title: "A última página"
+                        },
+                        perPage: {
+                            type: "number",
+                            title: "Quantos itens por página"
+                        }
+                    }
+                },
+                data: {
+                    type: "array",
+                    items: { $ref: getSchemaPath(UserPresenter) }
+                }
+            }
+        }
+    })
+    @ApiResponse({
+        status: 422,
+        description: "Parâmetros de consulta invalidos"
+    })
+    @ApiResponse({
+        status: 401,
+        description: "Acesso não autorizado"
+    })
+    @ApiBearerAuth()
     @Get()
     async search(@Query() searchParams: ListUsersDto) {
         const output = await this.listUsersUseCase.execute(searchParams);
         return UsersController.listUsersToResponse(output);
     }
 
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: 401,
+        description: "Acesso não autorizado"
+    })
+    @ApiResponse({
+        status: 404,
+        description: "Id não encontrado"
+    })
     @UseGuards(AuthGuard)
     @Get(":id")
     async findOne(@Param("id") id: string) {
@@ -79,6 +163,19 @@ export class UsersController {
         return UsersController.userToResponse(output);
     }
 
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: 401,
+        description: "Acesso não autorizado"
+    })
+    @ApiResponse({
+        status: 404,
+        description: "Id não encontrado"
+    })
+    @ApiResponse({
+        status: 422,
+        description: "Corpo da requisição com dados invalidos"
+    })
     @UseGuards(AuthGuard)
     @Put(":id")
     async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -86,6 +183,19 @@ export class UsersController {
         return UsersController.userToResponse(output);
     }
 
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: 401,
+        description: "Acesso não autorizado"
+    })
+    @ApiResponse({
+        status: 404,
+        description: "Id não encontrado"
+    })
+    @ApiResponse({
+        status: 422,
+        description: "Corpo da requisição com dados invalidos"
+    })
     @UseGuards(AuthGuard)
     @Patch(":id")
     async updatePassword(@Param("id") id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
@@ -93,6 +203,19 @@ export class UsersController {
         return UsersController.userToResponse(output);
     }
 
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: 401,
+        description: "Acesso não autorizado"
+    })
+    @ApiResponse({
+        status: 404,
+        description: "Id não encontrado"
+    })
+    @ApiResponse({
+        status: 204,
+        description: "Resposta de confirmação a exclusão"
+    })
     @UseGuards(AuthGuard)
     @HttpCode(204)
     @Delete(":id")
