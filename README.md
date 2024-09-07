@@ -25,6 +25,12 @@ Aplicando Clear Code, DDD e Clean Architecture em um projeto Nestjs + Docker + P
     7. [Resumo](/readme/ddd.md#resumo)
 * [Clean Architecture](/readme/clean-architecture.md#clean-architecture)
     1. [Princípios Fundamentais do Clean Architecture](/readme/clean-architecture.md#princípios-fundamentais-do-clean-architecture)
+    2. [Estrutura do Clean Architecture](/readme/clean-architecture.md#estrutura-do-clean-architecture)
+* [Integração Contínua e Entrega Contínua (CI/CD)](/readme/ci_cd.md#integração-contínua-e-entrega-contínua-cicd)
+    1. [Integração Contínua (CI)](/readme/ci_cd.md#integração-contínua-ci)
+    2. [Entrega Contínua (CD)](/readme/ci_cd.md#entrega-contínua-cd)
+    3. [Processo](/readme/ci_cd.md#processo)
+    4. [Ferramentas Comuns para CI/CD](/readme/ci_cd.md#ferramentas-comuns-para-cicd)
 
 ## Resumo
 
@@ -44,3 +50,6 @@ O projeto tem como objetivo fornecer uma base sólida para o desenvolvimento de 
 - [Eng Softmoderna](https://engsoftmoderna.info/artigos/ddd.html)
 - [Clean Architecture](https://medium.com/luizalabs/descomplicando-a-clean-architecture-cf4dfc4a1ac6)
 - [Chat GPT](https://chat.openai.com/)
+- [Intensivo Domain Driven Design (DDD): Os 3 pilares que você precisa saber](https://www.youtube.com/live/vFZkOyaPK4E)
+- [Domain Driven Design do Jeito Certo](https://www.youtube.com/live/cz6EU7Z_BhE)
+- [Clean Architecture](https://www.youtube.com/live/BuSf7VsH064)

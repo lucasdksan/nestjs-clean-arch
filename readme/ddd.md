@@ -104,4 +104,33 @@ Essa camada é formada por três tipos principais de classes:
 
 ### Resumo
 
-O DDD (Domain Driven Design) foca em atacar a complexidade no coração do Software. Ele não terá muita utilidade para um simples CRUD, mas para uma empresa que existe varios setores e que cada setor
+O Domain-Driven Design (DDD) é uma abordagem estratégica focada em atacar a complexidade no coração do software. Embora possa não ser essencial para um simples CRUD, sua aplicação se torna crucial em empresas com vários setores, onde cada setor tem uma visão estratégica única que define o core do negócio, seu foco e como gera valor. Em outras palavras, o DDD permite entender a complexidade de um domínio e mapeá-lo de maneira eficaz.
+
+Um dos conceitos-chave do DDD é a delimitação do contexto. Dependendo da linguagem utilizada por cada setor dentro de uma empresa, uma mesma entidade pode ser compreendida e tratada de formas distintas, com diferentes nomes e significados. Por isso, delimitar o contexto do projeto é fundamental para garantir que cada setor entenda e opere dentro dos seus próprios termos, evitando confusões e promovendo uma comunicação clara e eficaz.
+
+![Contexts](../github/contexts.png)
+
+Entender e delimitar esses contextos torna-se essencial para alinhar a visão estratégica da empresa com o desenvolvimento do software, garantindo que a complexidade do domínio seja gerida de maneira apropriada e que o software reflita com precisão as operações e objetivos da empresa.
+
+
+Aqui está uma versão revisada e aprimorada do seu texto:
+
+A visão tática no Domain-Driven Design (DDD) é essencial para distinguir entre diferentes tipos de complexidade: a complexidade de negócio e a complexidade técnica.
+
+A complexidade de negócio está diretamente relacionada ao domínio, ou seja, ao que o software precisa resolver. Ela engloba os desafios e requisitos específicos da área de atuação da empresa, exigindo um entendimento profundo do domínio para desenvolver soluções que atendam às necessidades reais do negócio.
+
+Por outro lado, a complexidade técnica refere-se às tecnologias, arquiteturas, e estruturas utilizadas para implementar essas soluções. Essa parte é particularmente desafiadora, pois, se não for abordada de forma cuidadosa, pode resultar na mistura dessas complexidades. Quando a complexidade de negócio e a complexidade técnica se entrelaçam de maneira inadequada, isso pode dificultar a manutenção a longo prazo, complicar a implementação de novos recursos e tornar os testes mais complexos e demorados.
+
+Por isso, é crucial manter uma separação clara entre essas duas dimensões, garantindo que cada uma seja tratada de forma adequada e independente, sem interferências que possam comprometer a qualidade e a eficiência do software.
+
+Fazendo a divisão correta das complexidades é possivel chegar na arquitetura de pastas:
+
+* Domain
+* Infra/Infrastructure
+* App/Application
+
+---
+
+* **Pasta Domain:** Regras dos negocio
+* **Pasta Infra:** Mundo Externo
+* **Pasta App:** Controle do fluxo da aplicação
