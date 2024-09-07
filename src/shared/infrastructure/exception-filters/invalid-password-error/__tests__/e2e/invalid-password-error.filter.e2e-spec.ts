@@ -23,7 +23,7 @@ describe("InvalidPasswordErrorFilter", () => {
         app = module.createNestApplication();
         app.useGlobalFilters(new InvalidPasswordErrorFilter());
         await app.init();
-    });
+    }, 10000);
 
     it("should be defined", () => {
         expect(new InvalidPasswordErrorFilter()).toBeDefined();

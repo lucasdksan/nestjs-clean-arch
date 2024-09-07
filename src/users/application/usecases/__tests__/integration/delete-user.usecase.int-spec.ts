@@ -51,7 +51,7 @@ describe("Delete UseCase Integration tests", ()=>{
             }
         });
 
-        expect(output.name).toBeNull();
+        expect(output).toBeNull();
 
         const models = await prismaService.user.findMany({});
 

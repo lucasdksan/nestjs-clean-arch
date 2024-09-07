@@ -6,7 +6,7 @@ import { NotFoundErrorFilter } from "./shared/infrastructure/exception-filters/n
 import { InvalidPasswordErrorFilter } from "./shared/infrastructure/exception-filters/invalid-password-error/invalid-password-error.filter";
 import { InvalidCredentialsErrorFilter } from "./shared/infrastructure/exception-filters/invalid-credentials-error/invalid-credentials-error.filter";
 
-function applayGlobalConfig(app: INestApplication) {
+function applyGlobalConfig(app: INestApplication) {
     app.useGlobalPipes(new ValidationPipe({
         errorHttpStatusCode: 422,
         whitelist: true,
@@ -25,4 +25,4 @@ function applayGlobalConfig(app: INestApplication) {
     )
 }
 
-export default applayGlobalConfig;
+export default applyGlobalConfig;

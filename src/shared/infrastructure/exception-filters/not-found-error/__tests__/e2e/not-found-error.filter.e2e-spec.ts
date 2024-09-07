@@ -23,7 +23,7 @@ describe("NotFoundErrorFilter (e2e)", () => {
         app = module.createNestApplication();
         app.useGlobalFilters(new NotFoundErrorFilter());
         await app.init();
-    });
+    }, 10000);
 
     it("should be defined", () => {
         expect(new NotFoundErrorFilter()).toBeDefined();

@@ -1,41 +1,124 @@
-import { instanceToInstance } from "class-transformer";
+import { instanceToPlain } from "class-transformer";
 import { UserPresenter } from "../../user.presenter";
+import { UserCollectionPresenter } from "../../user-collection.presenter";
+import { PaginationPresenter } from "../../../../../shared/infrastructure/presenters/pagination.presenter";
 
-describe("User Presenter unit test", ()=>{
-    const createdAt = new Date();
-
-    let sut: UserPresenter;
-
-    let props = {
-        id: "0c7d61a1-54b4-4c61-bc69-0d2e0ab34ab7",
+describe("UserPresenter unit tests", () => {
+    const createdAt = new Date()
+    const props = {
+        id: "e71c52a2-9710-4a96-a08e-144af4209b5d",
         name: "test name",
-        email: "a@a.gmail.com",
-        password: "f1231sada#$$as",
-        createdAt
+        email: "a@a.com",
+        password: "fake",
+        createdAt,
+    }
+    let sut: UserPresenter
+
+    beforeEach(() => {
+        sut = new UserPresenter(props)
+    })
+
+    describe("constructor", () => {
+        it("should set values", () => {
+            expect(sut.id).toEqual(props.id)
+            expect(sut.name).toEqual(props.name)
+            expect(sut.email).toEqual(props.email)
+            expect(sut.createdAt).toEqual(props.createdAt)
+        })
+    })
+
+    it("should presenter data", () => {
+        const output = instanceToPlain(sut)
+        expect(output).toStrictEqual({
+            id: "e71c52a2-9710-4a96-a08e-144af4209b5d",
+            name: "test name",
+            email: "a@a.com",
+            createdAt: createdAt.toISOString(),
+        })
+    })
+})
+
+describe("UserCollectionPresenter unit tests", () => {
+    const createdAt = new Date()
+    const props = {
+        id: "e71c52a2-9710-4a96-a08e-144af4209b5d",
+        name: "test name",
+        email: "a@a.com",
+        password: "fake",
+        createdAt,
     }
 
-    beforeEach(()=>{
-        sut = new UserPresenter(props);
-    });
+    describe("constructor", () => {
+        it("should set values", () => {
+            const sut = new UserCollectionPresenter({
+                items: [props],
+                currentPage: 1,
+                perPage: 2,
+                lastPage: 1,
+                total: 1,
+            })
+            expect(sut.meta).toBeInstanceOf(PaginationPresenter)
+            expect(sut.meta).toStrictEqual(
+                new PaginationPresenter({
+                    currentPage: 1,
+                    perPage: 2,
+                    lastPage: 1,
+                    total: 1,
+                }),
+            )
+            expect(sut.data).toStrictEqual([new UserPresenter(props)])
+        })
+    })
 
-    describe("Constructor", ()=>{
-        it("should be defined", ()=>{
-            expect(sut.id).toEqual(props.id);
-            expect(sut.name).toEqual(props.name);
-            expect(sut.email).toEqual(props.email);
-            expect(sut.createdAt).toEqual(props.createdAt);
-        });
-    });
-
-
-    it("should presenter data", ()=>{
-        const output = instanceToInstance(sut);
-
+    it("should presenter data", () => {
+        let sut = new UserCollectionPresenter({
+            items: [props],
+            currentPage: 1,
+            perPage: 2,
+            lastPage: 1,
+            total: 1,
+        })
+        let output = instanceToPlain(sut)
         expect(output).toStrictEqual({
-            id: "0c7d61a1-54b4-4c61-bc69-0d2e0ab34ab7",
-            name: "test name",
-            email: "a@a.gmail.com",
-            createdAt: createdAt.toISOString()
-        });
-    });
-});
+            data: [
+                {
+                    id: "e71c52a2-9710-4a96-a08e-144af4209b5d",
+                    name: "test name",
+                    email: "a@a.com",
+                    createdAt: createdAt.toISOString(),
+                },
+            ],
+            meta: {
+                currentPage: 1,
+                perPage: 2,
+                lastPage: 1,
+                total: 1,
+            },
+        })
+
+        sut = new UserCollectionPresenter({
+            items: [props],
+            currentPage: "1" as any,
+            perPage: "2" as any,
+            lastPage: "1" as any,
+            total: "1" as any,
+        })
+        output = instanceToPlain(sut)
+        expect(output).toStrictEqual({
+            data: [
+                {
+                    id: "e71c52a2-9710-4a96-a08e-144af4209b5d",
+                    name: "test name",
+                    email: "a@a.com",
+                    createdAt: createdAt.toISOString(),
+                },
+            ],
+            meta: {
+                currentPage: 1,
+                perPage: 2,
+                lastPage: 1,
+                total: 1,
+            },
+        })
+    })
+})

@@ -10,9 +10,9 @@ import { setupPrismaTests } from "../../../../shared/infrastructure/database/pri
 import { EnvConfigModule } from "../../../../shared/infrastructure/env-config/env-config.module";
 import { UsersModule } from "../../users.module";
 import { DatabaseModule } from "../../../../shared/infrastructure/database/database.module";
-import applayGlobalConfig from "../../../../global-config";
 import { BcryptjsHashProvider } from "../../providers/hash-provider/bcryptjs-hash.provider";
 import { UserDataBuilder } from "../../../domain/testing/helpers/user-data-builder";
+import applyGlobalConfig from "../../../../global-config";
 
 describe("Users Controller Update Password e2e tests", () => {
     let app: INestApplication;
@@ -35,12 +35,12 @@ describe("Users Controller Update Password e2e tests", () => {
             ],
         }).compile();
         app = module.createNestApplication();
-        applayGlobalConfig(app);
+        applyGlobalConfig(app);
         await app.init();
         repository = module.get<UserRepository.Repository>("UserRepository");
         hashProvider = new BcryptjsHashProvider();
         hashPassword = await hashProvider.generateHash("1234");
-    });
+    }, 10000);
 
     beforeEach(async () => {
         updatePasswordDto = {

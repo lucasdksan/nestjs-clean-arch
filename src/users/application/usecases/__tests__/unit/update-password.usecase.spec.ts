@@ -38,7 +38,7 @@ describe("UpdatePasswordUseCase unit tests", () => {
                 oldPassword: "",
             }),
         ).rejects.toThrow(
-            new InvalidPasswordError("Old password and new Password is required"),
+            new InvalidPasswordError("Old password and new password is required"),
         );
     });
 
@@ -52,7 +52,7 @@ describe("UpdatePasswordUseCase unit tests", () => {
                 oldPassword: "1234",
             }),
         ).rejects.toThrow(
-            new InvalidPasswordError("Old password and new Password is required"),
+            new InvalidPasswordError("Old password and new password is required"),
         )
     });
 

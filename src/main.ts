@@ -4,8 +4,8 @@ import {
     NestFastifyApplication,
 } from "@nestjs/platform-fastify";
 import { AppModule } from "./app.module";
-import applayGlobalConfig from "./global-config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import applyGlobalConfig from "./global-config";
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -27,7 +27,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("api", app, document);
 
-    applayGlobalConfig(app);
+    applyGlobalConfig(app);
     await app.listen(3000, "0.0.0.0");
 }
 

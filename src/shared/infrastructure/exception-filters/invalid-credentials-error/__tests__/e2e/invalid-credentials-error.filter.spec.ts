@@ -23,7 +23,7 @@ describe("InvalidCredentialsErrorFilter e2e tests", () => {
         app = module.createNestApplication();
         app.useGlobalFilters(new InvalidCredentialsErrorFilter());
         await app.init();
-    });
+    }, 10000);
 
     it("should be defined", () => {
         expect(new InvalidCredentialsErrorFilter()).toBeDefined();

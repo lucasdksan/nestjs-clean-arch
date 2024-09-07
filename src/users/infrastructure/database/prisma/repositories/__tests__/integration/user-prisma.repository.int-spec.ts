@@ -73,7 +73,7 @@ describe("UserPrismaRepository integration tests", () => {
         const entity = new UserEntity(UserDataBuilder({}));
 
         await expect(() => sut.update(entity)).rejects.toThrow(
-            new NotFoundError(`UserModel not found using ID  ${entity.id}`),
+            new NotFoundError(`UserModel not found using ID ${entity.id}`),
         );
     });
 
@@ -100,7 +100,7 @@ describe("UserPrismaRepository integration tests", () => {
         const entity = new UserEntity(UserDataBuilder({}));
 
         await expect(() => sut.delete(entity.id)).rejects.toThrow(
-            new NotFoundError(`UserModel not found using ID  ${entity.id}`),
+            new NotFoundError(`UserModel not found using ID ${entity.id}`),
         );
     });
 
@@ -118,7 +118,7 @@ describe("UserPrismaRepository integration tests", () => {
             }
         });
 
-        expect(output.name).toBeNull();
+        expect(output).toBeNull();
     });
 
     it("should throws error when a entity not found", async () => {
@@ -224,7 +224,7 @@ describe("UserPrismaRepository integration tests", () => {
             );
 
             const searchOutputPage2 = await sut.search(new UserRepository.SearchParams({
-                page: 1,
+                page: 2,
                 perPage: 2,
                 sort: "name",
                 sortDir: "asc",

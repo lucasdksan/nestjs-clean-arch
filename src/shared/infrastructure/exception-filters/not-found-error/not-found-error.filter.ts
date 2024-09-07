@@ -8,7 +8,7 @@ export class NotFoundErrorFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<FastifyReply>();
 
-        response.status(409).send({
+        response.status(404).send({
             statusCode: 404,
             error: "Not Found",
             message: exception.message,

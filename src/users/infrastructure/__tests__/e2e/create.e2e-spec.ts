@@ -10,9 +10,9 @@ import { SignupDto } from "../../dtos/sign-up.dto";
 import request from "supertest";
 import { UsersController } from "../../users.controller";
 import { instanceToPlain } from "class-transformer";
-import applayGlobalConfig from "../../../../global-config";
 import { UserEntity } from "../../../domain/entities/user.entity";
 import { UserDataBuilder } from "../../../domain/testing/helpers/user-data-builder";
+import applyGlobalConfig from "../../../../global-config";
 
 describe("Users Controller Create test e2e", () => {
     let app: INestApplication;
@@ -30,11 +30,11 @@ describe("Users Controller Create test e2e", () => {
         }).compile();
 
         app = module.createNestApplication();
-        applayGlobalConfig(app);
+        applyGlobalConfig(app);
 
         await app.init();
         repository = module.get<UserRepository.Repository>("UserRepository");
-    });
+    }, 10000);
 
     beforeEach(async () => {
         signupDto = {

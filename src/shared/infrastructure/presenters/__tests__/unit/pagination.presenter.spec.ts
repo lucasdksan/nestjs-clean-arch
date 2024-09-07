@@ -40,38 +40,34 @@ describe("Pagination Presenter unit test", () => {
 
 
     it("should presenter data", () => {
-        it("should set values", ()=>{
-            const props = {
-                currentPage: 1,
-                perPage: 2,
-                lastPage: 3,
-                total: 4
-            };
+        let sut = new PaginationPresenter({
+            currentPage: 1,
+            perPage: 2,
+            lastPage: 3,
+            total: 4
+        });
+        let output = instanceToPlain(sut);
 
-            let sut = new PaginationPresenter(props);
-            let output = instanceToPlain(sut);
+        expect(output).toStrictEqual({
+            currentPage: 1,
+            perPage: 2,
+            lastPage: 3,
+            total: 4
+        });
 
-            expect(output).toStrictEqual({
-                currentPage: 1,
-                perPage: 2,
-                lastPage: 3,
-                total: 4
-            });
+        sut = new PaginationPresenter({
+            currentPage: "1" as any,
+            perPage: "2" as any,
+            lastPage: "3" as any,
+            total: "4" as any
+        });
+        output = instanceToPlain(sut);
 
-            sut = new PaginationPresenter({
-                currentPage: "1" as any,
-                perPage: "2" as any,
-                lastPage: "3" as any,
-                total: "4" as any
-            });
-            output = instanceToPlain(sut);
-
-            expect(output).toStrictEqual({
-                currentPage: 1,
-                perPage: 2,
-                lastPage: 3,
-                total: 4
-            });
+        expect(output).toStrictEqual({
+            currentPage: 1,
+            perPage: 2,
+            lastPage: 3,
+            total: 4
         });
     });
 });

@@ -20,7 +20,7 @@ export namespace UpdatePassword {
             const entity = await this.userRepository.findById(input.id);
 
             if(!input.password || !input.oldPassword){
-                throw new InvalidPasswordError("Old password and new Password is required");
+                throw new InvalidPasswordError("Old password and new password is required");
             }
 
             const checkOldPassword = await this.hashProvider.compareHash(input.oldPassword, entity.password);

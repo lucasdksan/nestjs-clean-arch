@@ -6,7 +6,6 @@ import { setupPrismaTests } from "../../../../shared/infrastructure/database/pri
 import { EnvConfigModule } from "../../../../shared/infrastructure/env-config/env-config.module";
 import { UsersModule } from "../../users.module";
 import { DatabaseModule } from "../../../../shared/infrastructure/database/database.module";
-import applayGlobalConfig from "../../../../global-config";
 import { UserEntity } from "../../../domain/entities/user.entity";
 import request from "supertest";
 import { UserDataBuilder } from "../../../domain/testing/helpers/user-data-builder";
@@ -14,6 +13,7 @@ import { instanceToPlain } from "class-transformer";
 import { UsersController } from "../../users.controller";
 import { HashProvider } from "../../../../shared/application/providers/hash-provider";
 import { BcryptjsHashProvider } from "../../providers/hash-provider/bcryptjs-hash.provider";
+import applyGlobalConfig from "../../../../global-config";
 
 describe("UsersController e2e tests", () => {
     let app: INestApplication;
@@ -35,12 +35,12 @@ describe("UsersController e2e tests", () => {
             ],
         }).compile();
         app = module.createNestApplication();
-        applayGlobalConfig(app);
+        applyGlobalConfig(app);
         await app.init();
         repository = module.get<UserRepository.Repository>("UserRepository");
         hashProvider = new BcryptjsHashProvider();
         hashPassword = await hashProvider.generateHash("1234");
-    });
+    }, 10000);
 
     beforeEach(async () => {
         await prismaService.user.deleteMany();

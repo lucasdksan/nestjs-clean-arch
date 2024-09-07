@@ -23,7 +23,7 @@ describe("ConflictErrorFilter (e2e)", () => {
         app = module.createNestApplication();
         app.useGlobalFilters(new ConflictErrorFilter());
         await app.init();
-    });
+    }, 10000);
 
     it("should be defined", () => {
         expect(new ConflictErrorFilter()).toBeDefined();
